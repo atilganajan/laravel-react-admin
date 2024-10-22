@@ -48,6 +48,22 @@ Route::namespace('Api')->name('api.')->group(function () {
                     Route::delete('/', 'UsersController@destroyAvatar')->name('destroy');
                 });
             });
+
+            // Task routes
+            Route::resource('tasks', 'TaskController', ['except' => ['edit', 'create']]);
+            // Grouped task routes
+            Route::prefix('tasks')->name('tasks.')->group(function () {
+                // Get all tasks
+                Route::get("/", "TaskController@index")->name("index");
+                // Get a task
+                Route::get("/{task}", "TaskController@show")->name("show");
+                // Store new task
+                Route::post("/", "TaskController@store")->name("store");
+                // Update task
+                Route::patch("/{task}", "TaskController@update")->name("update");
+                // Delete task
+                Route::delete("/{task}", "TaskController@destroy")->name("destroy");
+            });
         });
     });
 });
