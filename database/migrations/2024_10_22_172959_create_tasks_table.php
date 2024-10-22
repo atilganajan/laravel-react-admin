@@ -20,7 +20,7 @@ class CreateTasksTable extends Migration
             $table->text('description');
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', ['pending', 'in_progress', 'completed']);
+            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->timestamps();
 
             // Foreign key linking 'user_id' to 'id' in the 'users' table
