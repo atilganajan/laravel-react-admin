@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Observers\TaskObserver;
+use App\Task;
 use File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -15,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Task::observe(TaskObserver::class);
+
         Schema::defaultStringLength(191);
     }
 
