@@ -4,6 +4,7 @@ import { Master as MasterLayout } from '../layouts';
 import * as NavigationUtils from '../../../helpers/Navigation';
 import { Table, TableBody, TableCell, Typography, TablePagination, TableHead, TableRow, Paper, Button } from '@material-ui/core';
 import Task from '../../../models/Task';
+import { Kanban } from './Kanban';
 
 function List(props) {
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,7 @@ function List(props) {
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
-        return 'gray';
+        return 'red';
       case 'in_progress':
         return 'orange';
       case 'completed':
@@ -74,20 +75,28 @@ function List(props) {
     setPage(0); // Reset page when number of rows changes
   };
 
+  const primaryAction = {
+    text: "Create Task",
+    clicked: () =>
+        history.push(
+            NavigationUtils.route('backoffice.task-manager.create'),
+        ),
+};
+
   return (
     <MasterLayout
       {...childProps}
       loading={loading}
       pageTitle="Task List"
       message={message}
+      primaryAction={primaryAction}
     >
       <div style={{ padding: '20px', width: '100%' }}>
         <Typography variant="h4" align="center" gutterBottom>
           Task List
         </Typography>
-  
+
         <Paper elevation={3} style={{ maxWidth: '90%', margin: '0 auto', padding: '20px' }}>
-          {/* Scrollable table container */}
           <div style={{ overflowX: 'auto' }}>
             <Table style={{ minWidth: '600px' }}>
               <TableHead>
@@ -118,8 +127,8 @@ function List(props) {
                           {getStatusReadable(task.status)}
                         </Typography>
                       </TableCell>
-                      <TableCell style={{minWidth:"150px"}}>{task.start_date}</TableCell>
-                      <TableCell style={{minWidth:"150px"}}>{task.end_date}</TableCell>
+                      <TableCell style={{ minWidth: "150px" }}>{task.start_date}</TableCell>
+                      <TableCell style={{ minWidth: "150px" }}>{task.end_date}</TableCell>
                       <TableCell>
                         <Button
                           variant="contained"
@@ -158,17 +167,23 @@ function List(props) {
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
-            onChangePage={handleChangePage} 
+            onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
             style={{ marginTop: '10px' }}
           />
         </Paper>
+
       </div>
+      <div style={{ padding: '20px', width: '100%', marginTop:"20px" }}>
+        <Kanban taskList={tasks} onTaskUpdate={fetchTasks} />
+      </div>
+
     </MasterLayout>
+
   );
-  
-  
-  
+
+
+
 }
 
 export default List;
