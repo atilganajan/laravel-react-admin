@@ -1,6 +1,7 @@
 import { Home } from '../views/__backoffice';
 import * as Settings from '../views/__backoffice/settings';
 import * as Users from '../views/__backoffice/users';
+import * as TaskManager from '../views/__backoffice/taskManager';
 
 const resources = [
     {
@@ -27,6 +28,32 @@ const resources = [
     return route;
 });
 
+// Task manager route definitions
+const taskManagerRoutes = [
+    {
+        name: 'task-manager.index',
+        path: '/task-manager',
+        component: TaskManager.List,
+    },
+
+    {
+        name: 'task-manager.create',
+        path: '/task-manager/create',
+        component: TaskManager.Create,
+    },
+
+    {
+        name: 'task-manager.edit',
+        path: '/task-manager/:id/edit',
+        component: TaskManager.Edit,
+    },
+].map(route => ({
+    ...route,
+    name: `${route.name}`,
+    path: `/task-manager${route.path}`,
+}));
+
+
 export default [
     {
         name: 'home',
@@ -47,9 +74,11 @@ export default [
     },
 
     ...resources,
+    ...taskManagerRoutes
 ].map(route => {
     route.name = `backoffice.${route.name}`;
     route.auth = true;
 
     return route;
 });
+
